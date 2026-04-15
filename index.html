@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Melany! 🎂</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --jk-purple: #6c5ce7;
+            --soft-pink: #ff79c6;
+            --bg-body: #fdfdfd;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            background-color: var(--bg-body);
+            color: #333;
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; 
+        }
+
+        nav {
+            background: white;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: none; border: none; color: #555; font-weight: bold;
+            font-size: 0.75em; text-transform: uppercase; cursor: pointer;
+            padding: 10px; transition: 0.3s; border-bottom: 2px solid transparent;
+        }
+
+        nav button.active { color: var(--jk-purple); border-bottom: 2px solid var(--jk-purple); }
+
+        .content { flex-grow: 1; position: relative; }
+
+        section {
+            display: none; 
+            padding: 40px 20px; 
+            min-height: calc(100vh - 60px); 
+            width: 100%;
+            text-align: center; 
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        section.active { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- MODIFICACIÓN DE MARCOS Y GALERÍA --- */
+        .grid-galeria { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 20px; 
+            width: 100%; 
+            max-width: 1000px; 
+            margin-top: 20px; 
+        }
+
+        @media (min-width: 768px) {
+            .grid-galeria {
+                grid-template-columns: repeat(3, 1fr);
+                align-items: start; /* Evita que los marcos cortos se estiren dejando huecos blancos */
+            }
+        }
+
+        .marco { 
+            background: white; 
+            padding: 10px; 
+            border-radius: 15px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
+            border: 1px solid #eee; 
+            overflow: hidden;   
+            width: 100%;
+            height: auto; /* El marco se ajusta a la altura de la foto */
+        }
+
+        .marco img { 
+            width: 100%; 
+            height: auto; 
+            display: block; /* Elimina el pequeño margen inferior fantasma de las imágenes */
+            transition: transform 0.5s; 
+            border-radius: 10px; 
+        }
+
+        .marco img:hover { transform: scale(1.05); }
+        /* --- FIN DE MODIFICACIÓN --- */
+
+        #inicio { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; justify-content: center; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: clamp(2.5em, 8vw, 4em); margin: 0; }
+
+        .contador { display: flex; gap: 10px; margin: 25px 0; justify-content: center; flex-wrap: wrap; }
+        .caja-tiempo { background: rgba(255,255,255,0.2); padding: 15px; border-radius: 15px; min-width: 85px; }
+        .caja-tiempo span { display: block; font-size: 1.8em; font-weight: bold; }
+
+        .btn-pulsar { padding: 15px 40px; font-size: 1.2em; font-weight: bold; color: var(--jk-purple); background: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s; }
+        .btn-pulsar:hover { transform: scale(1.05); }
+
+        #jungkook { background-color: #0d0d0d; color: #e0e0e0; }
+        .texto-personalizada { max-width: 700px; line-height: 1.8; color: #bb86fc; font-weight: 500; margin-bottom: 25px; font-size: 1.1em; }
+
+        #final { background: #fff0f6; justify-content: center; }
+        .despedida { font-family: 'Dancing Script', cursive; font-size: 3em; color: var(--jk-purple); }
+    </style>
+</head>
+<body>
+
+    <audio id="musicaFondo" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <nav id="mainNav">
+        <button class="active" onclick="showSection('inicio', this)">Inicio</button>
+        <button onclick="showSection('jungkook', this)">Tu Marido 💜</button>
+        <button onclick="showSection('fotos', this)">Galería 📸</button>
+        <button onclick="showSection('anecdotas', this)">Anécdotas 😂</button>
+        <button onclick="showSection('final', this)">Final ✨</button>
+    </nav>
+
+    <div class="content">
+        <section id="inicio" class="active">
+            <h1>¡Felicidades, Melany!</h1>
+            <p>Llevas siendo la mejor persona del mundo durante:</p>
+            <div class="contador">
+                <div class="caja-tiempo"><span id="days">00</span>Días</div>
+                <div class="caja-tiempo"><span id="hours">00</span>Hrs</div>
+                <div class="caja-tiempo"><span id="minutes">00</span>Min</div>
+                <div class="caja-tiempo"><span id="seconds">00</span>Seg</div>
+            </div>
+            <button class="btn-pulsar" onclick="celebrar()">✨ PULSAR ✨</button>
+        </section>
+
+        <section id="jungkook">
+            <h2>💜 Tu marido 💜</h2>
+            <p class="texto-personalizada">
+                Como sé que eres la esposa de Jungkook (aunque él no lo sepa, pero bueno, eso es secundario),
+                he creado una sección con fotos suyas para que admires esa gran joya de hombre jajajaj 🔥🔥🔥🔥
+            </p>
+
+            <div class="grid-galeria">
+                <div class="marco"><img src="Jungkook/jk1.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk2.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk3.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk4.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk5.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk6.png" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk7.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk8.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk9.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk10.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk11.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk12.jpeg" alt="Jungkook"></div>
+                <div class="marco"><img src="Jungkook/jk13.jpeg" alt="Jungkook"></div>
+            </div>
+            
+            <p style="color: #bb86fc; font-weight: bold; margin-top: 20px;">🔥 ¡Aún no me creo que vayamos a ver a semejante obra de arte en unos meses! 🔥</p>
+        </section>
+
+        <section id="fotos">
+            <h2>📸 Nuestra Galería</h2>
+            <p class="texto-personalizada" style="color: #666;">
+                Momentos inolvidables juntas. ¡A echarse unas risas!
+            </p>
+            <div class="grid-galeria">
+                <div class="marco"><img src="Fotos/foto1.jpeg" alt="Foto 1"></div>
+                <div class="marco"><img src="Fotos/foto2.jpeg" alt="Foto 2"></div>
+                <div class="marco"><img src="Fotos/foto3.jpeg" alt="Foto 3"></div>
+                <div class="marco"><img src="Fotos/foto4.jpeg" alt="Foto 4"></div>
+                <div class="marco"><img src="Fotos/foto5.jpeg" alt="Foto 5"></div>
+                <div class="marco"><img src="Fotos/foto6.jpeg" alt="Foto 6"></div>
+                <div class="marco"><img src="Fotos/foto7.jpeg" alt="Foto 7"></div>
+                <div class="marco"><img src="Fotos/foto8.jpeg" alt="Foto 8"></div>
+                <div class="marco"><img src="Fotos/foto9.jpeg" alt="Foto 9"></div>
+                <div class="marco"><img src="Fotos/foto10.jpeg" alt="Foto 10"></div>
+                <div class="marco"><img src="Fotos/foto11.jpeg" alt="Foto 11"></div>
+                <div class="marco"><img src="Fotos/foto12.jpg" alt="Foto 12"></div>
+                <div class="marco"><img src="Fotos/foto13.jpg" alt="Foto 13"></div>
+                <div class="marco"><img src="Fotos/foto14.jpg" alt="Foto 14"></div>
+
+                <div class="marco">
+                    <video controls style="width: 100%; border-radius: 10px; display: block;">
+                        <source src="Fotos/video1.MP4" type="video/mp4">
+                    </video>
+                </div>
+
+                <div class="marco">
+                    <video controls style="width: 100%; border-radius: 10px; display: block;">
+                        <source src="Fotos/video2.mp4" type="video/mp4">
+                    </video>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="anecdotas">
+
+            <h2>Momentos que nunca voy a olvidar</h2>
+
+            <div style="max-width: 600px; text-align: left; color: #555; font-style: italic; line-height: 1.8;">
+                <p>• <b>Obviamente, nunca me voy a olvidar del primer día que nos conocimos (el mejor regalo de nuestras vidas sin duda).</b></p>
+                <p>• <b>Los momentos en clase contigo eran los mejores (ahora son una mierda porque no estás tú).</b></p>
+                <p>• <b>Las recuperaciones de las narices a las que íbamos juntas (no a muchas ya que yo ganaba siempre, 7/8 suspensos mae mía casi hago pleno jajajjaja).</b></p>
+                <p>• <b>No olvidarme del viaje a París, que maravilla o lala jajjajaja (habrá que repetirlo cuando haya dinero allá por el 2050).</b></p>
+                <p>• <b>Cuando íbamos juntas a lo del SEI, que gran día tuvimos cuando fuimos al sitio cuyo nombre no me acuerdo pero si tengo una foto tuya jajajja.</b></p>
+                <p>• <b>Y como no olvidarme del gran momentazo de los San Fermines del año pasado. Que puta risa con el carrito, menos mal que no íbamos borrachas...</b></p>
+                <p style="text-align: center; margin-top: 20px; font-weight: bold; color: var(--jk-purple);">
+                    Que ganas tengo de seguir sumando momentos a tu lado y seguramente los mejores de mi vida... (como por ejemplo nuestro futuro tatuaje juntas).
+                </p>
+            </div>
+
+        </section>
+
+         <section id="final">
+
+            <h2 class="despedida">¡Feliz día, Melany!</h2>
+
+            <p style="font-size: 1.1em; max-width: 600px;">
+                Pues nada, espero que te haya gustado esta mini sorpresa. Nunca me voy a cansar de decirte que eres una de las personas más importantes de mi vida (aunque sea una cansa lo repetiría una y mil veces). Ya has llegado a los 21  lo que significa que ya eres legal en todos los países. OLEEEEEEE. Pues eso, que gracias a la vida por ponerte en mi camino y gracias a ti por permanecer ahí, espero que no desaparezcas nunca (si no te secuestro jajajjajaj). Gracias por aguantarme, por ayudarme y escucharme siempre. TE QUIERO UN MONTÓNNNN ❤️❤️❤️
+            </p>
+            <div style="font-size: 3.5em; margin-top: 15px;">🎂🎈🎁</div>
+            <p style="margin-top: 25px; font-weight: bold; color: var(--jk-purple);">Hecho con mucho ❤️</p>
+        </section>
+    </div>
+
+    <script>
+        function showSection(id, btn) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+            
+            if(id === 'final') {
+                confetti({ 
+                    particleCount: 150, 
+                    spread: 70, 
+                    origin: { y: 0.6 }, 
+                    colors: ['#E70013', '#F9E300', '#008751'] 
+                });
+            }
+        }
+
+        const nacimiento = new Date(2005, 3, 13, 0, 0, 0); 
+
+        function clock() {
+            const diff = new Date() - nacimiento;
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            document.getElementById("minutes").innerText = Math.floor((diff / (1000 * 60)) % 60);
+            document.getElementById("seconds").innerText = Math.floor((diff / 1000) % 60);
+        }
+        setInterval(clock, 1000); 
+        clock();
+
+        function celebrar() {
+            confetti({ 
+                particleCount: 150, 
+                spread: 70, 
+                origin: { y: 0.6 }, 
+                colors: ['#E70013', '#F9E300', '#008751'] 
+            });
+
+            const audio = document.getElementById("musicaFondo");
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Audio esperando interacción"));
+            } else {
+                audio.pause();
+            }
+        }
+    </script>
+</body>
+</html>
